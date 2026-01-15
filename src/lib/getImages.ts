@@ -1,4 +1,5 @@
-import { v2 as cloudinary } from "cloudinary";
+import {v2 as cloudinary} from "cloudinary";
+import {IMAGE_URL_PORTFOLIO_QUERY_1} from "@/util/images";
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,
@@ -6,11 +7,9 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET!,
 });
 
-export async function getImages() {
+export async function getImages(query: string = IMAGE_URL_PORTFOLIO_QUERY_1) {
     const res = await cloudinary.search
-        .expression(
-            "folder:studio_kodak/portfolio AND resource_type:image AND type:upload"
-        )
+        .expression(query)
         .sort_by("public_id", "asc")
         .max_results(100)
         .execute();
